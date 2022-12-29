@@ -10,4 +10,6 @@
     <string name="name">Name</string>
     <string name="password">Password</string>
     <string name="email">Email</string>
+    <string name="account">Do not have an account yet? <font color='#FFD247'>Register</font></string>
+    <string name="forgot_password"><u>Forgot your password?</u></string>
 </resources>
