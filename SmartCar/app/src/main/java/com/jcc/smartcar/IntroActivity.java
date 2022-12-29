@@ -1,16 +1,17 @@
 package com.jcc.smartcar;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 public class IntroActivity extends AppCompatActivity {
 
     private Button btnSignUp;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,7 +21,7 @@ public class IntroActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN
         );
-        btnSignUp = (Button)findViewById(R.id.btn_sign_up_intro);
+        btnSignUp = (Button) findViewById(R.id.btn_sign_up_intro);
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -28,7 +29,6 @@ public class IntroActivity extends AppCompatActivity {
                 startActivity(signupIntent);
             }
         });
-
 
 
     }
