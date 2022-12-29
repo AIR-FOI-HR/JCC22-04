@@ -42,7 +42,7 @@ public class BaseActivity extends AppCompatActivity {
         return "";
     }
 
-    /* DO WE NEED THIS?
+    /*
     private void doubleBackToExit() {
         if (doubleBackToExitPressedOnce) {
             super.onBackPressed();
