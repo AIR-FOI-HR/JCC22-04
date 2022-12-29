@@ -55,6 +55,8 @@ public class SignUpActivity extends BaseActivity {
                                 FirebaseUser firebaseUser = task.getResult().getUser();
                                 // Registered Email
                                 String registeredEmail = firebaseUser.getEmail();
+                                FirebaseAuth.getInstance().signOut();
+                                finish();
 
                                 // Class user needs to be created for this line to work properly
                                 // User user = new User(firebaseUser.getUid(), name, registeredEmail);
