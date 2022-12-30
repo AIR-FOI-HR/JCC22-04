@@ -18,7 +18,7 @@ public class SplashActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN
         );
         new Handler().postDelayed(() -> {
-            Intent intent = new Intent(SplashActivity.this, LoginPageActivity.class);
+            Intent intent = new Intent(SplashActivity.this, IntroActivity.class);
             startActivity(intent);
             finish();
         }, 2500);

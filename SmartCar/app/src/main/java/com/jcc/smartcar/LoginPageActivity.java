@@ -1,15 +1,17 @@
 package com.jcc.smartcar;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class LoginPageActivity extends AppCompatActivity {
+import com.google.firebase.auth.FirebaseAuth;
+
+public class LoginPageActivity extends BaseActivity {
 
     EditText mail;
     EditText password;
@@ -17,6 +19,9 @@ public class LoginPageActivity extends AppCompatActivity {
     Button signInGoogle;
     TextView signUp;
     TextView forgotPassword;
+    ProgressBar progressBarLogin;
+
+    FirebaseAuth auth = FirebaseAuth.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,39 +31,54 @@ public class LoginPageActivity extends AppCompatActivity {
         mail = findViewById(R.id.editTextLoginEmailAddress);
         password = findViewById(R.id.editTextLoginPassword);
         signIn = findViewById(R.id.buttonLoginPage);
-        signInGoogle = findViewById(R.id.signInButtonLogin);
+        /*signInGoogle = findViewById(R.id.signInButtonLogin);*/
         signUp = findViewById(R.id.textViewLoginRegister);
         forgotPassword = findViewById(R.id.textViewLoginForgotPassword);
+        progressBarLogin = findViewById(R.id.progressBarLogin);
 
-        signIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        signIn.setOnClickListener(view -> {
 
-            }
+            String userEmail = mail.getText().toString();
+            String userPassword = password.getText().toString();
+
+            signInWithFirebase(userEmail, userPassword);
+
         });
 
-        signInGoogle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        /*signInGoogle.setOnClickListener(view -> {
 
-            }
+        });*/
+
+        signUp.setOnClickListener(view -> {
+
+            Intent i = new Intent(LoginPageActivity.this, SignUpActivity.class);
+            startActivity(i);
+
         });
 
-        signUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        forgotPassword.setOnClickListener(view -> {
 
-                Intent i = new Intent(LoginPageActivity.this, SignUpActivity.class);
-                startActivity(i);
-
-            }
-        });
-
-        forgotPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
         });
     }
+
+    public void signInWithFirebase(String userEmail, String userPassword){
+        progressBarLogin.setVisibility(View.VISIBLE);
+        signIn.setClickable(false);
+
+        auth.signInWithEmailAndPassword(userEmail, userPassword)
+                .addOnCompleteListener(this, task -> {
+
+                    if (task.isSuccessful()){
+                        Intent i = new Intent(LoginPageActivity.this, MainActivity.class);
+                                startActivity(i);
+                                finish();
+                                progressBarLogin.setVisibility(View.INVISIBLE);
+                                Toast.makeText(LoginPageActivity.this, "Login is successful!", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                                Toast.makeText(LoginPageActivity.this, "Login is not successful!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
 }
