@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class LoginPageActivity extends BaseActivity {
 
@@ -81,4 +82,16 @@ public class LoginPageActivity extends BaseActivity {
                 });
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        FirebaseUser user = auth.getCurrentUser();
+        if (user != null){
+            Intent i = new Intent(LoginPageActivity.this, MainActivity.class);
+            startActivity(i);
+            finish();
+        }
+
+    }
 }
