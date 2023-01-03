@@ -192,7 +192,7 @@ public class LoginPageActivity extends BaseActivity {
                 });
     }
 
-    /*@Override
+    @Override
     protected void onStart() {
         super.onStart();
 
@@ -203,5 +203,5 @@ public class LoginPageActivity extends BaseActivity {
             finish();
         }
 
-    }*/
+    }
 }
