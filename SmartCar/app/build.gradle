@@ -51,6 +51,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-storage:19.1.1'
     // Firebase Messaging Dependency
     implementation 'com.google.firebase:firebase-messaging:23.1.1'
+    //Firebase Realtime Database Dependency
+    implementation 'com.google.firebase:firebase-database:20.1.0'
 
 
     testImplementation 'junit:junit:4.13.2'
