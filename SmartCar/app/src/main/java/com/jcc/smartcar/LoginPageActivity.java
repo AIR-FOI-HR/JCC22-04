@@ -89,8 +89,12 @@ public class LoginPageActivity extends BaseActivity {
 
         });
 
-        forgotPassword.setOnClickListener(view -> {
-
+        forgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentForgotPassword = new Intent(LoginPageActivity.this, ForgotPassword.class);
+                startActivity(intentForgotPassword);
+            }
         });
     }
 
