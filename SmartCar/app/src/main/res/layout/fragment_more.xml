@@ -55,13 +55,13 @@
         android:layout_height="0dp"
         android:layout_marginBottom="15dp"
         android:src="@drawable/smartcar3"
-        app:layout_constraintBottom_toTopOf="@+id/textView12"
+        app:layout_constraintBottom_toTopOf="@+id/textViewEdit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
     <TextView
-        android:id="@+id/textView11"
+        android:id="@+id/textViewLogOut"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="81dp"
@@ -74,7 +74,7 @@
         app:layout_constraintTop_toBottomOf="@+id/editPasswordProfileInfo" />
 
     <TextView
-        android:id="@+id/textView12"
+        android:id="@+id/textViewEdit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
@@ -118,7 +118,7 @@
         android:inputType="textPassword"
         android:textColor="#FFFFFF"
         android:textColorHint="#80FFFFFF"
-        app:layout_constraintBottom_toTopOf="@+id/textView11"
+        app:layout_constraintBottom_toTopOf="@+id/textViewLogOut"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editEmailAdressProfileInfo" />
@@ -132,7 +132,7 @@
         app:layout_constraintBottom_toTopOf="@+id/editEmailAdressProfileInfo"
         app:layout_constraintEnd_toEndOf="@+id/editEmailAdressProfileInfo"
         app:layout_constraintStart_toStartOf="@+id/editEmailAdressProfileInfo"
-        app:layout_constraintTop_toBottomOf="@+id/textView12">
+        app:layout_constraintTop_toBottomOf="@+id/textViewEdit">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_name_profileInfo"
