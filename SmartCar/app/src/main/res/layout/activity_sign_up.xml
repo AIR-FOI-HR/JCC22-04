@@ -114,12 +114,13 @@
                     android:layout_marginTop="@dimen/sign_up_screen_btn_marginTop"
                     android:layout_marginEnd="@dimen/btn_marginStartEnd"
                     android:background="@drawable/shape_button_rounded"
+                    android:backgroundTint="@color/yellow"
                     android:foreground="?attr/selectableItemBackground"
                     android:gravity="center"
                     android:paddingTop="@dimen/btn_paddingTopBottom"
                     android:paddingBottom="@dimen/btn_paddingTopBottom"
                     android:text="@string/sign_up"
-                    android:textColor="@android:color/white"
+                    android:textColor="@android:color/black"
                     android:textSize="@dimen/btn_text_size" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
