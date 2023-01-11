@@ -53,9 +53,9 @@
         android:id="@+id/imageView2"
         android:layout_width="237dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="56dp"
         android:src="@drawable/smartcar3"
-        app:layout_constraintBottom_toTopOf="@+id/textViewEdit"
+        app:layout_constraintBottom_toTopOf="@+id/editTextName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView10" />
@@ -64,26 +64,14 @@
         android:id="@+id/textViewLogOut"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="81dp"
+        android:layout_marginBottom="136dp"
         android:text="@string/log_out"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editPasswordProfileInfo" />
-
-    <TextView
-        android:id="@+id/textViewEdit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
-        android:text="@string/edit"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/editTextName"
-        app:layout_constraintEnd_toEndOf="@+id/imageView2"
-        app:layout_constraintStart_toEndOf="@+id/imageView2"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+        app:layout_constraintTop_toBottomOf="@+id/editEmailAdressProfileInfo" />
 
     <EditText
         android:id="@+id/editEmailAdressProfileInfo"
@@ -91,7 +79,7 @@
         android:layout_height="50dp"
         android:layout_marginStart="55dp"
         android:layout_marginEnd="55dp"
-        android:layout_marginBottom="23dp"
+        android:layout_marginBottom="31dp"
         android:background="#121D3E"
         android:backgroundTint="#121D3E"
         android:ems="10"
@@ -99,29 +87,10 @@
         android:inputType="textEmailAddress"
         android:textColor="#FFFFFF"
         android:textColorHint="#80FFFFFF"
-        app:layout_constraintBottom_toTopOf="@+id/editPasswordProfileInfo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextName" />
-
-    <EditText
-        android:id="@+id/editPasswordProfileInfo"
-        android:layout_width="300dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="55dp"
-        android:layout_marginEnd="55dp"
-        android:layout_marginBottom="14dp"
-        android:background="#121D3E"
-        android:backgroundTint="#121D3E"
-        android:ems="10"
-        android:hint="   Password"
-        android:inputType="textPassword"
-        android:textColor="#FFFFFF"
-        android:textColorHint="#80FFFFFF"
         app:layout_constraintBottom_toTopOf="@+id/textViewLogOut"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editEmailAdressProfileInfo" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextName" />
 
     <EditText
         android:id="@+id/editTextName"
@@ -140,6 +109,6 @@
         app:layout_constraintBottom_toTopOf="@+id/editEmailAdressProfileInfo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewEdit" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
