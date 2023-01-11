@@ -27,9 +27,7 @@ public class MoreFragment extends Fragment {
     View root;
     EditText editTextName;
     EditText editTextEmail;
-    EditText editTextPassword;
     TextView logout;
-    TextView edit;
     FirebaseAuth auth;
     FirebaseDatabase database;
     DatabaseReference reference;
@@ -43,10 +41,10 @@ public class MoreFragment extends Fragment {
         root = inflater.inflate(R.layout.fragment_more, container, false);
 
         logout = root.findViewById(R.id.textViewLogOut);
-        edit = root.findViewById(R.id.textViewEdit);
+
         editTextName = root.findViewById(R.id.editTextName);
         editTextEmail = root.findViewById(R.id.editEmailAdressProfileInfo);
-        editTextPassword = root.findViewById(R.id.editPasswordProfileInfo);
+
 
         database = FirebaseDatabase.getInstance();
         reference = database.getReference();
@@ -75,12 +73,6 @@ public class MoreFragment extends Fragment {
                 }
             }
         });
-        edit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                updateProfile();
-            }
-        });
         return  root;
     }
     //Get user information from Realtime Database
@@ -91,10 +83,9 @@ public class MoreFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String name = snapshot.child("userName").getValue().toString();
                 String email = snapshot.child("userEmail").getValue().toString();
-                String password = snapshot.child("userPassword").getValue().toString();
                 editTextName.setText(name);
                 editTextEmail.setText(email);
-                editTextPassword.setText(password);
+
             }
 
             @Override
