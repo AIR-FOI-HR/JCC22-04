@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.text.TextUtils;
+import android.util.Patterns;
 
 import androidx.annotation.NonNull;
 
@@ -17,9 +19,23 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class SignUpActivity extends BaseActivity {
     TextView login;
+
+    // validation method
+    private boolean validateForm(final String name, final String email, final String password) {
+        if(TextUtils.isEmpty(name) || TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
+            return false;
+        }
+//validating email address
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            return false;
+        }
+        return true;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,33 +78,26 @@ public class SignUpActivity extends BaseActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-
-                                // Firebase registered user
                                 FirebaseUser firebaseUser = task.getResult().getUser();
-                                // Registered Email
-                                String registeredEmail = firebaseUser.getEmail();
-                                FirebaseAuth.getInstance().signOut();
-                                finish();
-
-                                // Class user needs to be created for this line to work properly
-                                // User user = new User(firebaseUser.getUid(), name, registeredEmail);
-
-                                // call the registerUser function of FirestoreClass to make an entry in the database. FireStroreclass still missing
-                                //FirestoreClass().registerUser(this, user)
+                                String uid = firebaseUser.getUid();
+                                User user = new User(uid, name, email);
+                                FirebaseFirestore.getInstance().collection("users").document(uid)
+                                        .set(user)
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    Log.d("User", "User added to Firestore");
+                                                } else {
+                                                    Log.d("User", "Error adding user to Firestore");
+                                                }
+                                            }
+                                        });
                             } else {
                                 Toast.makeText(SignUpActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
-        }
-    }
 
-    private boolean validateForm(final String name, final String email, final String password) {
-        if (!name.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
-            return true;
-        } else {
-            showErrorSnackBar("Please fill all fields.");
-            return false;
         }
-    }
-}
+    }}

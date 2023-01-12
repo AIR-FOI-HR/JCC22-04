@@ -1,37 +1,40 @@
 package com.jcc.smartcar;
 
+import com.jcc.smartcar.User;
+
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
-import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+
+
 
 public class MoreFragment extends Fragment {
-
-    View root;
-    EditText editTextName;
-    EditText editTextEmail;
-    TextView logout;
-    FirebaseAuth auth;
-    FirebaseDatabase database;
-    DatabaseReference reference;
-    FirebaseUser firebaseUser;
+    private View root;
+    private EditText editTextName;
+    private EditText editTextEmail;
+    private TextView logout;
+    private FirebaseAuth auth;
+    private FirebaseFirestore firestore;
+    private FirebaseUser firebaseUser;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -45,24 +48,15 @@ public class MoreFragment extends Fragment {
         editTextName = root.findViewById(R.id.editTextName);
         editTextEmail = root.findViewById(R.id.editEmailAdressProfileInfo);
 
-
-        database = FirebaseDatabase.getInstance();
-        reference = database.getReference();
+        firestore = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
         firebaseUser = auth.getCurrentUser();
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if(user != null){
-            String name = user.getDisplayName();
-            String email = user.getEmail();
-            editTextName.setText(name);
-            editTextEmail.setText(email);
-
+        //Get information about user from Firestore
+        if(firebaseUser != null){
+            getUserInfo();
+            getGoogleUserInfo(); //call this method to get google user info
         }
-
-        //Get information about user from RealTime Database
-        getUserInfo();
-
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -75,30 +69,36 @@ public class MoreFragment extends Fragment {
         });
         return  root;
     }
-    //Get user information from Realtime Database
-    public void getUserInfo(){
-
-        reference.child("User").child(firebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String name = snapshot.child("userName").getValue().toString();
-                String email = snapshot.child("userEmail").getValue().toString();
-                editTextName.setText(name);
-                editTextEmail.setText(email);
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+    //Get user information from Firestore
+    private void getUserInfo(){
+        firestore.collection("users").document(firebaseUser.getUid()).get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                User user = document.toObject(User.class);
+                                editTextName.setText(user.getName());
+                                editTextEmail.setText(user.getEmail());
+                            } else {
+                                // Handle case when document doesn't exist
+                            }
+                        } else {
+                            // Handle case when fetching fails
+                        }
+                    }
+                });
     }
 
-    //Update user name
-    public void updateProfile(){
-        String userName = editTextName.getText().toString();
-        reference.child("User").child(firebaseUser.getUid()).child("userName").setValue(userName);
+    private void getGoogleUserInfo() {
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getContext());
+        if (account != null) {
+            String name = account.getDisplayName();
+            String email = account.getEmail();
+            editTextName.setText(name);
+            editTextEmail.setText(email);
+        }
     }
-
 }
+
