@@ -1,7 +1,5 @@
 package com.jcc.smartcar;
 
-import com.jcc.smartcar.User;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,17 +11,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 
 
@@ -40,7 +35,6 @@ public class MoreFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        // Inflate the layout for this fragment
         root = inflater.inflate(R.layout.fragment_more, container, false);
 
         logout = root.findViewById(R.id.textViewLogOut);
@@ -52,10 +46,9 @@ public class MoreFragment extends Fragment {
         auth = FirebaseAuth.getInstance();
         firebaseUser = auth.getCurrentUser();
 
-        //Get information about user from Firestore
         if(firebaseUser != null){
             getUserInfo();
-            getGoogleUserInfo(); //call this method to get google user info
+            getGoogleUserInfo();
         }
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,7 +62,7 @@ public class MoreFragment extends Fragment {
         });
         return  root;
     }
-    //Get user information from Firestore
+
     private void getUserInfo(){
         firestore.collection("users").document(firebaseUser.getUid()).get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -81,11 +74,7 @@ public class MoreFragment extends Fragment {
                                 User user = document.toObject(User.class);
                                 editTextName.setText(user.getName());
                                 editTextEmail.setText(user.getEmail());
-                            } else {
-                                // Handle case when document doesn't exist
                             }
-                        } else {
-                            // Handle case when fetching fails
                         }
                     }
                 });

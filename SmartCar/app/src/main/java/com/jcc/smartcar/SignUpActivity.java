@@ -24,12 +24,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class SignUpActivity extends BaseActivity {
     TextView login;
 
-    // validation method
+
     private boolean validateForm(final String name, final String email, final String password) {
         if(TextUtils.isEmpty(name) || TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
             return false;
         }
-//validating email address
+
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             return false;
         }

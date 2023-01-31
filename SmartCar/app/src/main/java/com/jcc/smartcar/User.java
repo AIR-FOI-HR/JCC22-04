@@ -5,7 +5,7 @@ public class User {
     private String email;
     private String uid;
 
-    public User() {} // Empty constructor is required by Firebase
+    public User() {}
 
     public User(String uid, String name, String email) {
         this.uid = uid;
