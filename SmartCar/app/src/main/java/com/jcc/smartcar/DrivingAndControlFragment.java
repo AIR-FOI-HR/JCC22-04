@@ -1,5 +1,7 @@
 package com.jcc.smartcar;
 
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -7,12 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.Toast;
-
+import android.widget.ToggleButton;
+import android.widget.VideoView;
 import androidx.fragment.app.Fragment;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
@@ -26,7 +29,6 @@ public class DrivingAndControlFragment extends Fragment {
     private PrintWriter out;
     private static final int SERVER_PORT = 80;
     private static final String SERVER_IP = "192.168.4.1";
-    private String SSID = "ESP32-CAM Robot";
 
     private Button forwardButton;
     private Button backButton;
@@ -35,17 +37,15 @@ public class DrivingAndControlFragment extends Fragment {
     private ImageButton lightsON;
     private ImageButton lightsOFF;
     private SeekBar speed;
-
-
+    private ToggleButton cameraOnOf;
+    private VideoView videoView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_driving_and_control, container, false);
 
-
         new ConnectTask().execute("");
-
 
         forwardButton = view.findViewById(R.id.forward);
         backButton = view.findViewById(R.id.back);
@@ -53,6 +53,33 @@ public class DrivingAndControlFragment extends Fragment {
         rightButton = view.findViewById(R.id.right);
         lightsON = view.findViewById(R.id.imageButtonLightOn);
         lightsOFF = view.findViewById(R.id.imageButtonLightOff);
+        cameraOnOf = view.findViewById(R.id.toggleButton);
+        videoView = view.findViewById(R.id.videoView);
+
+        cameraOnOf.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    Toast.makeText(getContext(), "Camera on.", Toast.LENGTH_SHORT).show();
+                    videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                        @Override
+                        public void onCompletion(MediaPlayer mp) {
+                            try {
+                                Uri videoUri = Uri.parse("http://" +SERVER_IP +":81/stream");
+                                videoView.setVideoURI(videoUri);
+                                videoView.requestFocus();
+                                videoView.start();
+                            } catch (Exception e) {
+                                Log.e("Error", e.getMessage());
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                }else{
+                    Toast.makeText(getContext(), "Camera off.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         forwardButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -196,7 +223,7 @@ public class DrivingAndControlFragment extends Fragment {
                         @Override
                         public void run() {
                             try {
-                                URL url = new URL("http://" + SERVER_IP + "/control?var=speed&val=" + desiredSpeed);
+                                URL url = new URL("http://" + SERVER_IP + "/control?var=speed&val=" + 200);
                                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                                 connection.setRequestMethod("GET");
                                 connection.connect();
@@ -222,43 +249,6 @@ public class DrivingAndControlFragment extends Fragment {
         return view;
     }
 
-    void sendData(int val) {
-        String data = "car," + String.valueOf(val);
-        char[] dataToSend = data.toCharArray();
-        out.write(dataToSend);
-
-    }
-
-    public void sendRequest(String s) {
-    }
-
-    private class SendGetRequest extends AsyncTask<String, Void, String> {
-        @Override
-        protected String doInBackground(String... params) {
-            String path = params[0];
-            String urlString = "http://" + SERVER_IP + ":" + SERVER_PORT + path;
-
-            try {
-                URL url = new URL(urlString);
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                connection.setRequestMethod("GET");
-
-                int responseCode = connection.getResponseCode();
-                if (responseCode == 200) {
-                    // Request was successful
-                    Log.d("SendGetRequest", "Request successful");
-                } else {
-                    // Request failed
-                    Log.e("SendGetRequest", "Request failed with response code: " + responseCode);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-    }
-
     private class ConnectTask extends AsyncTask<String, String, Void> {
 
         @Override
@@ -280,7 +270,3 @@ public class DrivingAndControlFragment extends Fragment {
     }
 
 }
-
-
-
-
